@@ -5,18 +5,31 @@
   
   <title>Thinkphp5任意代码执行 | Know it Then hack it</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="啥都不会,擅长吹牛">
-<meta name="keywords" content="记录安全路上的点点滴滴">
+  <meta name="description" content="复现一下thinkphp5的任意代码执行第一次复现漏洞所以会写的细一点(版本5.0.15)首先看一下App类中的run是怎么做的 可以看到他是获取url路由,调用了一个本类的routeCheck函数,跟进 看到调用了request实例中的path函数跟进 $pathinfo的值又是调用了实例中的pathinfo(),继续跟进pathinfo() 可以看到这个函数里面直接读取了配置项中的var_pa">
+<meta name="keywords" content="复现">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Thinkphp5任意代码执行">
 <meta property="og:url" content="http://www.onlybragging.top/2018/12/11/Thinkphp5任意代码执行/index.html">
 <meta property="og:site_name" content="Know it Then hack it">
-<meta property="og:description" content="啥都不会,擅长吹牛">
+<meta property="og:description" content="复现一下thinkphp5的任意代码执行第一次复现漏洞所以会写的细一点(版本5.0.15)首先看一下App类中的run是怎么做的 可以看到他是获取url路由,调用了一个本类的routeCheck函数,跟进 看到调用了request实例中的path函数跟进 $pathinfo的值又是调用了实例中的pathinfo(),继续跟进pathinfo() 可以看到这个函数里面直接读取了配置项中的var_pa">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2018-12-11T12:49:41.207Z">
+<meta property="og:image" content="https://i.loli.net/2018/12/11/5c0fba7864365.png">
+<meta property="og:image" content="https://i.loli.net/2018/12/11/5c0fbb242188d.png">
+<meta property="og:image" content="https://i.loli.net/2018/12/11/5c0fbb7a047a7.png">
+<meta property="og:image" content="https://i.loli.net/2018/12/11/5c0fbba756b32.png">
+<meta property="og:image" content="https://i.loli.net/2018/12/11/5c0fbc5b07988.png">
+<meta property="og:image" content="https://i.loli.net/2018/12/11/5c0fbc8559c7d.png">
+<meta property="og:image" content="https://i.loli.net/2018/12/11/5c0fbcb6a895a.png">
+<meta property="og:image" content="https://i.loli.net/2018/12/11/5c0fbcf77ba59.png">
+<meta property="og:image" content="https://i.loli.net/2018/12/11/5c0fbd4633c6d.png">
+<meta property="og:image" content="https://i.loli.net/2018/12/11/5c0fbd634ec5c.png">
+<meta property="og:image" content="https://i.loli.net/2018/12/11/5c0fbd8bc4ff2.png">
+<meta property="og:image" content="https://i.loli.net/2018/12/11/5c0fbdd1b33ff.png">
+<meta property="og:updated_time" content="2018-12-11T13:39:32.546Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Thinkphp5任意代码执行">
-<meta name="twitter:description" content="啥都不会,擅长吹牛">
+<meta name="twitter:description" content="复现一下thinkphp5的任意代码执行第一次复现漏洞所以会写的细一点(版本5.0.15)首先看一下App类中的run是怎么做的 可以看到他是获取url路由,调用了一个本类的routeCheck函数,跟进 看到调用了request实例中的path函数跟进 $pathinfo的值又是调用了实例中的pathinfo(),继续跟进pathinfo() 可以看到这个函数里面直接读取了配置项中的var_pa">
+<meta name="twitter:image" content="https://i.loli.net/2018/12/11/5c0fba7864365.png">
   
   
     <link rel="icon" href="/favicon.png">
@@ -120,7 +133,18 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        
+        <h1 id="复现一下thinkphp5的任意代码执行"><a href="#复现一下thinkphp5的任意代码执行" class="headerlink" title="复现一下thinkphp5的任意代码执行"></a>复现一下thinkphp5的任意代码执行</h1><h2 id="第一次复现漏洞所以会写的细一点-版本5-0-15"><a href="#第一次复现漏洞所以会写的细一点-版本5-0-15" class="headerlink" title="第一次复现漏洞所以会写的细一点(版本5.0.15)"></a>第一次复现漏洞所以会写的细一点(版本5.0.15)</h2><h3 id="首先看一下App类中的run是怎么做的"><a href="#首先看一下App类中的run是怎么做的" class="headerlink" title="首先看一下App类中的run是怎么做的"></a>首先看一下App类中的run是怎么做的</h3><p><img src="https://i.loli.net/2018/12/11/5c0fba7864365.png" alt=""></p>
+<h3 id="可以看到他是获取url路由-调用了一个本类的routeCheck函数-跟进"><a href="#可以看到他是获取url路由-调用了一个本类的routeCheck函数-跟进" class="headerlink" title="可以看到他是获取url路由,调用了一个本类的routeCheck函数,跟进"></a>可以看到他是获取url路由,调用了一个本类的routeCheck函数,跟进</h3><p><img src="https://i.loli.net/2018/12/11/5c0fbb242188d.png" alt=""></p>
+<h3 id="看到调用了request实例中的path函数跟进"><a href="#看到调用了request实例中的path函数跟进" class="headerlink" title="看到调用了request实例中的path函数跟进"></a>看到调用了request实例中的path函数跟进</h3><p><img src="https://i.loli.net/2018/12/11/5c0fbb7a047a7.png" alt=""></p>
+<h3 id="pathinfo的值又是调用了实例中的pathinfo-继续跟进pathinfo"><a href="#pathinfo的值又是调用了实例中的pathinfo-继续跟进pathinfo" class="headerlink" title="$pathinfo的值又是调用了实例中的pathinfo(),继续跟进pathinfo()"></a>$pathinfo的值又是调用了实例中的pathinfo(),继续跟进pathinfo()</h3><p><img src="https://i.loli.net/2018/12/11/5c0fbba756b32.png" alt=""></p>
+<h3 id="可以看到这个函数里面直接读取了配置项中的var-pathinfo-配置中默认的值为s所以这里如果我们输入url-s-index-index-index的值时这个函数会返回index-index-index-所以现在回到App-php中的routeCheck函数中-path-index-index-index-depr-’-’打印一下routeCheck返回的值"><a href="#可以看到这个函数里面直接读取了配置项中的var-pathinfo-配置中默认的值为s所以这里如果我们输入url-s-index-index-index的值时这个函数会返回index-index-index-所以现在回到App-php中的routeCheck函数中-path-index-index-index-depr-’-’打印一下routeCheck返回的值" class="headerlink" title="可以看到这个函数里面直接读取了配置项中的var_pathinfo,配置中默认的值为s所以这里如果我们输入url?s=index/index/index的值时这个函数会返回index/index/index,所以现在回到App.php中的routeCheck函数中$path=index/index/index,$depr=’/’打印一下routeCheck返回的值"></a>可以看到这个函数里面直接读取了配置项中的var_pathinfo,配置中默认的值为s所以这里如果我们输入url?s=index/index/index的值时这个函数会返回index/index/index,所以现在回到App.php中的routeCheck函数中$path=index/index/index,$depr=’/’打印一下routeCheck返回的值</h3><p><img src="https://i.loli.net/2018/12/11/5c0fbc5b07988.png" alt=""></p>
+<h3 id="接着回去看run函数"><a href="#接着回去看run函数" class="headerlink" title="接着回去看run函数"></a>接着回去看run函数</h3><p><img src="https://i.loli.net/2018/12/11/5c0fbc8559c7d.png" alt=""></p>
+<h3 id="跟踪exec"><a href="#跟踪exec" class="headerlink" title="跟踪exec"></a>跟踪exec</h3><p><img src="https://i.loli.net/2018/12/11/5c0fbcb6a895a.png" alt=""></p>
+<h3 id="因为type-module所以跟踪module函数"><a href="#因为type-module所以跟踪module函数" class="headerlink" title="因为type=module所以跟踪module函数"></a>因为type=module所以跟踪module函数</h3><p><img src="https://i.loli.net/2018/12/11/5c0fbcf77ba59.png" alt=""></p>
+<h3 id="最后返回值是一个方法调用-继续跟踪一下"><a href="#最后返回值是一个方法调用-继续跟踪一下" class="headerlink" title="最后返回值是一个方法调用 继续跟踪一下"></a>最后返回值是一个方法调用 继续跟踪一下</h3><p><img src="https://i.loli.net/2018/12/11/5c0fbd4633c6d.png" alt=""></p>
+<h3 id="可以看到是用反射类获取了函数然后执行"><a href="#可以看到是用反射类获取了函数然后执行" class="headerlink" title="可以看到是用反射类获取了函数然后执行"></a>可以看到是用反射类获取了函数然后执行</h3><p><img src="https://i.loli.net/2018/12/11/5c0fbd634ec5c.png" alt=""></p>
+<h3 id="打印一下-args的值"><a href="#打印一下-args的值" class="headerlink" title="打印一下$args的值"></a>打印一下$args的值</h3><p><img src="https://i.loli.net/2018/12/11/5c0fbd8bc4ff2.png" alt=""><br><img src="https://i.loli.net/2018/12/11/5c0fbdd1b33ff.png" alt=""></p>
+<h3 id="payload-url-s-index-think-app-invokefunction-amp-function-call-user-func-array-amp-vars-0-shell-exec-amp-vars-1-0-dir"><a href="#payload-url-s-index-think-app-invokefunction-amp-function-call-user-func-array-amp-vars-0-shell-exec-amp-vars-1-0-dir" class="headerlink" title="payload:url?s=/index/\think\app/invokefunction&amp;function=call_user_func_array&amp;vars[0]=shell_exec&amp;vars[1][0]=dir"></a>payload:url?s=/index/\think\app/invokefunction&amp;function=call_user_func_array&amp;vars[0]=shell_exec&amp;vars[1][0]=dir</h3><h1 id="author-Drift"><a href="#author-Drift" class="headerlink" title="author:Drift"></a>author:Drift</h1>
       
     </div>
     <footer class="article-footer">
@@ -129,6 +153,8 @@
       
 
       
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/复现/">复现</a></li></ul>
+
     </footer>
   </div>
   
