@@ -3,19 +3,31 @@
 <head><meta name="generator" content="Hexo 3.8.0">
   <meta charset="utf-8">
   
-  <title>Know it Then hack it</title>
+  <title>代码审计file_get_contents使用不当造成ssrf | Know it Then hack it</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="啥都不会,擅长吹牛">
-<meta name="keywords" content="记录安全路上的点点滴滴">
-<meta property="og:type" content="website">
-<meta property="og:title" content="Know it Then hack it">
-<meta property="og:url" content="http://www.onlybragging.top/index.html">
+  <meta name="description" content="前言题目来自PHP SECURITY CALENDAR 2017 Day 20 - Stocking题目叫作Stocking  漏洞解析 这一关考察的是file_get_contents()以及第25行的报错信息造成的内网信息泄露 分析一下程序,程序接收$_GET[‘img’],然后传到ImageLoader类中的getResult方法中,可以看到它进行了过滤filter_var($uri, FI">
+<meta name="keywords" content="Stocking">
+<meta property="og:type" content="article">
+<meta property="og:title" content="代码审计file_get_contents使用不当造成ssrf">
+<meta property="og:url" content="http://www.onlybragging.top/2019/01/21/代码审计1/index.html">
 <meta property="og:site_name" content="Know it Then hack it">
-<meta property="og:description" content="啥都不会,擅长吹牛">
+<meta property="og:description" content="前言题目来自PHP SECURITY CALENDAR 2017 Day 20 - Stocking题目叫作Stocking  漏洞解析 这一关考察的是file_get_contents()以及第25行的报错信息造成的内网信息泄露 分析一下程序,程序接收$_GET[‘img’],然后传到ImageLoader类中的getResult方法中,可以看到它进行了过滤filter_var($uri, FI">
 <meta property="og:locale" content="default">
+<meta property="og:image" content="http://plnyx8cn1.bkt.clouddn.com/stocking.png">
+<meta property="og:image" content="http://plnyx8cn1.bkt.clouddn.com/poc.png">
+<meta property="og:image" content="http://plnyx8cn1.bkt.clouddn.com/1txt.png">
+<meta property="og:image" content="http://plnyx8cn1.bkt.clouddn.com/notaloow.png">
+<meta property="og:image" content="http://plnyx8cn1.bkt.clouddn.com/%E7%BB%93%E6%9E%84.png">
+<meta property="og:image" content="http://plnyx8cn1.bkt.clouddn.com/%E6%BA%90%E5%A4%B41.png">
+<meta property="og:image" content="http://plnyx8cn1.bkt.clouddn.com/%E8%B0%83%E7%94%A8%E5%9C%B0%E6%96%B9.png">
+<meta property="og:image" content="http://plnyx8cn1.bkt.clouddn.com/%E5%88%A9%E7%94%A8%E7%82%B9.png">
+<meta property="og:image" content="http://plnyx8cn1.bkt.clouddn.com/%E6%9D%A1%E4%BB%B6.png">
+<meta property="og:image" content="http://plnyx8cn1.bkt.clouddn.com/ceye.png">
+<meta property="og:updated_time" content="2019-01-21T14:24:26.880Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Know it Then hack it">
-<meta name="twitter:description" content="啥都不会,擅长吹牛">
+<meta name="twitter:title" content="代码审计file_get_contents使用不当造成ssrf">
+<meta name="twitter:description" content="前言题目来自PHP SECURITY CALENDAR 2017 Day 20 - Stocking题目叫作Stocking  漏洞解析 这一关考察的是file_get_contents()以及第25行的报错信息造成的内网信息泄露 分析一下程序,程序接收$_GET[‘img’],然后传到ImageLoader类中的getResult方法中,可以看到它进行了过滤filter_var($uri, FI">
+<meta name="twitter:image" content="http://plnyx8cn1.bkt.clouddn.com/stocking.png">
   
   
     <link rel="icon" href="/favicon.png">
@@ -97,11 +109,7 @@
   </div>
 </header>
       <div class="outer">
-        <section id="main">
-  
-
-    
-    <article id="post-代码审计1" class="article article-type-post" itemscope="" itemprop="blogPost">
+        <section id="main"><article id="post-代码审计1" class="article article-type-post" itemscope="" itemprop="blogPost">
   <div class="article-meta">
     <a href="/2019/01/21/代码审计1/" class="article-date">
   <time datetime="2019-01-21T10:56:43.000Z" itemprop="datePublished">2019-01-21</time>
@@ -114,8 +122,8 @@
       <header class="article-header">
         
   
-    <h1 itemprop="name">
-      <a class="article-title" href="/2019/01/21/代码审计1/">代码审计file_get_contents使用不当造成ssrf</a>
+    <h1 class="article-title" itemprop="name">
+      代码审计file_get_contents使用不当造成ssrf
     </h1>
   
 
@@ -151,73 +159,20 @@
     </footer>
   </div>
   
-</article>
-
-
     
+<nav id="article-nav">
   
-
-    
-    <article id="post-代码审计" class="article article-type-post" itemscope="" itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2019/01/21/代码审计/" class="article-date">
-  <time datetime="2019-01-21T03:39:41.000Z" itemprop="datePublished">2019-01-21</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
   
-    <h1 itemprop="name">
-      <a class="article-title" href="/2019/01/21/代码审计/">代码审计ldap_escape过滤不全造成LDAP注入</a>
-    </h1>
+    <a href="/2019/01/21/代码审计/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">代码审计ldap_escape过滤不全造成LDAP注入</div>
+    </a>
   
+</nav>
 
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><h2 id="Day-xx-cookie"><a href="#Day-xx-cookie" class="headerlink" title="Day xx -cookie"></a>Day xx -cookie</h2><p><img src="http://plnyx8cn1.bkt.clouddn.com/LDAP.png" alt=""></p>
-<p><strong>漏洞解析:</strong></p>
-<p>首先我们要了解LDAP的语法:<br><img src="http://plnyx8cn1.bkt.clouddn.com/LDAP%E8%AF%AD%E6%B3%95.png" alt=""></p>
-<pre><code>简单的查询语句:(givenName=John)
-加上逻辑与的语句:(&amp;(givenName=John)(l=Dallas))
-*（通配符）(title=*)
-</code></pre><p>然后分析一下程序的运行</p>
-<ul>
-<li>这是一个登陆验证的程序,<strong>$_GET[“u”]</strong>和<strong>$_GET[“p”]</strong>分别是你输入的<strong>username</strong>和<strong>password</strong>        </li>
-<li>然后它创建一个<strong>LDAPAuthenticator</strong>实例对象,调用其中的<strong>authenticate()</strong>来进行一个登陆的验证操作</li>
-<li><strong>第20行</strong>和<strong>第21行</strong>,它用<strong>ldap_escape</strong>对用户名和密码分别进行了一次过滤</li>
-<li>最后用<strong>“(&amp;(uid=$user)(userPassword=$pass))”</strong>进行查询,如果账号密码正确则返回1,最后登陆成功</li>
-</ul>
-<p>问题出在<strong>LDAP_ESCAPE_DN</strong>这个过滤标志上,它过滤的符号为<strong><code>array(&#39;\\&#39;, &#39;,&#39;, &#39;=&#39;, &#39;+&#39;, &#39;&lt;&#39;, &#39;&gt;&#39;, &#39;;&#39;, &#39;&quot;&#39;, &#39;#&#39;)</code></strong>,所以我们就可以用payload<strong>“?u=*&amp;p=*来绕过”</strong><img src="http://plnyx8cn1.bkt.clouddn.com/success.png" alt=""></p>
-<h2 id="实例分析"><a href="#实例分析" class="headerlink" title="实例分析"></a>实例分析</h2><p>本次实例分析,我们分析的是Joomla! 3.7.5的一个LDAP注入攻击(<a href="http://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2017-14596" target="_blank" rel="noopener">CVE-2017-14596</a>)<br><a href="https://www.joomla.org/announcements/release-news/5711-joomla-3-7-5-release.html" target="_blank" rel="noopener">下载地址</a><img src="http://plnyx8cn1.bkt.clouddn.com/%E4%B8%8B%E8%BD%BD%E5%9C%B0%E5%9D%80.png" alt=""><strong>这个问题基于配置了LDAP的查询方式</strong><br>下载好压缩包解压打开路径<strong>/plugins/authentication/ldap/ldap.php</strong>问题出在120行<br><img src="http://plnyx8cn1.bkt.clouddn.com/%E6%BC%8F%E6%B4%9E%E4%BD%8D%E7%BD%AE.png" alt=""><br>在<a href="https://docs.joomla.org/LDAP_Authentication" target="_blank" rel="noopener">官方文档</a>中<strong>search_string</strong>用于绑定或者查询例如uid=[search],此处程序调用<strong>/libraries/vendor/joomla/ldap/src/LdapClient.php</strong>下的<strong>simple_search()</strong>直接将<strong>$credentials[‘username’]</strong>的值替换掉了需要查询的值而没做任何过滤<img src="http://plnyx8cn1.bkt.clouddn.com/%E7%9B%B4%E6%8E%A5%E4%BB%A3%E5%85%A5.png" alt="">最后程序在第284行调用了<strong>search()</strong>,可以看到第313行到315行,程序直接将未过滤的数据代入导致了LDAP的注入。</p>
-<p>让我们回头找一下<strong>$credentials</strong>这个变量是哪里输入的<br>找到<strong>/libraries/joomla/authentication/authentication.php</strong>的第284行的<strong>onUserAuthenticate()</strong><img src="http://plnyx8cn1.bkt.clouddn.com/%E9%80%89%E6%8B%A9.png" alt="">是由<strong>authenticate()</strong>调用过来的所以查找一下调用了<strong>authenticate()</strong>的地方</p>
-<p><img src="http://plnyx8cn1.bkt.clouddn.com/%E4%BC%A0.png" alt=""><br>打开<strong>/libraries/cms/application/cms.php</strong>可以看到第863行调用了<strong>authenticate()</strong><img src="http://plnyx8cn1.bkt.clouddn.com/login%E4%BD%8D%E7%BD%AE.png" alt="">他的上一层是<strong>login()</strong>所以最后搜索一下调用了<strong>login()</strong>的地方</p>
-<p>可以看到<strong>$credentials</strong>是由<strong>/administrator/components/com_login/controller.php</strong>中的第64行调用的<img src="http://plnyx8cn1.bkt.clouddn.com/%E6%8E%A5%E6%94%B6.png" alt="">这个文件的作用就是接收用户输入的凭证第61行就是接收的位置<br>所以在</p>
-
-      
-    </div>
-    <footer class="article-footer">
-      
-        <a data-url="http://www.onlybragging.top/2019/01/21/代码审计/" data-id="cjr6fag3h00038g7kgxawf22q" class="article-share-link">Share</a>
-      
-
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/LDAP/">LDAP</a></li></ul>
-
-    </footer>
-  </div>
   
 </article>
 
-
-    
-  
-  
 </section>
         
       </div>
